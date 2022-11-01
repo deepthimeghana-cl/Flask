@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Book List</title>
+  </head>
+  <body>
+    <h1>Add book</h1>
+    <form action="/" method="POST">
+      <label for="Book_ID">Book ID : </label>
+      <input id = "Book_ID" type="text" name="book_id" value="" required>
+      <p></p>
+      <label for="Book_Name">Book Name : </label>
+      <input id= "Book_Name" type="text" name="book_name" value="" required>
+      <p></p>
+      <input type="Submit" name="" value="Submit">
+    </form>
+    <h1>Books</h1>
+    <table>
+      <tr>
+        <th>Book ID</th>
+        <th>Book Name</th>
+      </tr>
+      {% for book in books %}
+        <tr>
+          <td>{{book.book_id}}</td>
+          <td>{{book.book_name}}</td>
+        </tr>
+    {% endfor %}
+  </table>
+  </body>
+</html>
