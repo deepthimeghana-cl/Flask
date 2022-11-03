@@ -63,12 +63,11 @@ def updated(id) :
         return f"Book with id = {id} doesn't exist"
     return redirect(f'/books/{id}')
 
-@app.route("/books/<int:id>/delete")
+@app.route("/books/<int:id>/delete", methods=["GET", "POST"])
 def deleted(id) :
     book = BooksModel.query.filter_by(book_id=id).first()
     if request.method == "POST" :
         if book :
-            book_id = book.book_id
             db.session.delete(book)
             db.session.commit()
             return redirect(f'/books')
