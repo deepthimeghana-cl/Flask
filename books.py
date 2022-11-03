@@ -41,18 +41,39 @@ def update(id) :
     print(book)
     if request.method == "POST" :
         if book :
+           return render_template("update.html", book=book)
+        return f"Book with id = {id} doesn't exist"
+    return "Do Nothing?"
+
+@app.route("/books/<int:id>/updated", methods=["GET", "POST"])
+def updated(id) :
+    book = BooksModel.query.filter_by(book_id=id).first()
+    if request.method == "POST" :
+        if book :
             book_id = book.book_id
             db.session.delete(book)
             db.session.commit()
             #id = request.form.get("book_id")
-            name = request.form['book_name']
+            name = request.form.get("book_name")
             book_new = BooksModel(book_id=book_id, book_name=name)
             print(book_new)
             db.session.add(book_new)
             db.session.commit()
-            return redirect(f'/books/{id}')
+            return redirect(f'/books')
         return f"Book with id = {id} doesn't exist"
-    return render_template("update.html", book=book)
+    return redirect(f'/books/{id}')
+
+@app.route("/books/<int:id>/delete")
+def deleted(id) :
+    book = BooksModel.query.filter_by(book_id=id).first()
+    if request.method == "POST" :
+        if book :
+            book_id = book.book_id
+            db.session.delete(book)
+            db.session.commit()
+            return redirect(f'/books')
+        return f"Book with id = {id} doesn't exist"
+    return redirect(f'/books/{id}')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
