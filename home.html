@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Book List</title>
   </head>
+  
   <body>
     <h1><FONT COLOR="red">Add book</FONT></h1>
     <form action="/" method="POST">
@@ -15,18 +16,26 @@
       <p></p>
       <input type="Submit" name="" value="Submit">
     </form>
-    <h1>Books</h1>
-    <table>
+    <h1><FONT COLOR="red">Books</FONT></h1>
+    <head>
+    <style>
+      table, th, td {
+         border: 1px solid black;
+      }
+   </style>
+   </head>
+   <table style="background-color:#ecbdc7">
       <tr>
         <th>Book ID</th>
         <th>Book Name</th>
       </tr>
       {% for book in books %}
-        <tr>
+        
+      <tr>
           <td><a href="books/{{book.book_id}}">{{book.book_id}}</a></td>
           <td><a href="books/{{book.book_id}}">{{book.book_name}}</a></td>
         </tr>
     {% endfor %}
-  </table>
+  </table> 
   </body>
 </html>
