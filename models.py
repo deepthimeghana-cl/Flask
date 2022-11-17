@@ -55,4 +55,4 @@ class LocationModel(db.Model) :
         self.location_name = location_name
 
     def __repr__(self) :
-        return f"{self.author_name}:{self.book_id}"
+        return f"{self.location_name}:{self.book_id}"

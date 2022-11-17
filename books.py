@@ -35,11 +35,12 @@ def home_read() :
         print(book[0].book_name)
         print(book[1].author_name)
         print(book[2].location_name)
-    return render_template("home.html", data=books)
+    return render_template("home.html", books=books)
 
 @app.route("/books/<int:id>")
 def SingleBook(id) :
-    book = BooksModel.query.filter_by(book_id=id).first()
+    book = db.session.query(BooksModel, AuthorsModel, LocationModel).join(AuthorsModel, BooksModel.book_id == AuthorsModel.book_id)\
+        .join(LocationModel, BooksModel.book_id == LocationModel.book_id).filter_by(book_id=id).first()
     print(book)
     if book :
         return render_template('book.html', book=book)
@@ -47,7 +48,8 @@ def SingleBook(id) :
 
 @app.route("/books/<int:id>/update",  methods=["GET", "POST"])
 def update(id) :
-    book = BooksModel.query.filter_by(book_id=id).first()
+    book = db.session.query(BooksModel, AuthorsModel, LocationModel).join(AuthorsModel, BooksModel.book_id == AuthorsModel.book_id)\
+        .join(LocationModel, BooksModel.book_id == LocationModel.book_id).filter_by(book_id=id).first()
     print(book)
     if request.method == "POST" :
         if book :
@@ -57,17 +59,36 @@ def update(id) :
 
 @app.route("/books/<int:id>/updated", methods=["GET", "POST"])
 def updated(id) :
-    book = BooksModel.query.filter_by(book_id=id).first()
+    book = db.session.query(BooksModel, AuthorsModel, LocationModel).join(AuthorsModel, BooksModel.book_id == AuthorsModel.book_id)\
+        .join(LocationModel, BooksModel.book_id == LocationModel.book_id).filter_by(book_id=id).first()
     if request.method == "POST" :
         if book :
-            book_id = book.book_id
-            db.session.delete(book)
+            book_id = book[0].book_id
+            book2 = LocationModel.query.filter_by(book_id=id).first()
+            db.session.delete(book2)
             db.session.commit()
+            book1 = AuthorsModel.query.filter_by(book_id=id).first()
+            db.session.delete(book1)
+            db.session.commit()
+            book0 = BooksModel.query.filter_by(book_id=id).first()
+            db.session.delete(book0)
+            db.session.commit()   
+            #db.session.commit()
             #id = request.form.get("book_id")
-            name = request.form.get("book_name")
-            book_new = BooksModel(book_id=book_id, book_name=name)
+            book_name = request.form.get("book_name")
+            author_name = request.form.get("author_name")
+            location_name = request.form.get("location_name")
+            book_new = BooksModel(book_id=book_id, book_name=book_name)
             print(book_new)
+            author_new = AuthorsModel(book_id=book_id, author_name=author_name)
+            print(author_new)
+            location_new = LocationModel(book_id=book_id, location_name=location_name)
+            print(location_new)
             db.session.add(book_new)
+            db.session.commit()
+            db.session.add(author_new)
+            db.session.commit()
+            db.session.add(location_new)
             db.session.commit()
             return redirect(f'/books')
         return f"Book with id = {id} doesn't exist"
@@ -75,11 +96,19 @@ def updated(id) :
 
 @app.route("/books/<int:id>/delete", methods=["GET", "POST"])
 def deleted(id) :
-    book = BooksModel.query.filter_by(book_id=id).first()
+    book = db.session.query(BooksModel, AuthorsModel, LocationModel).join(AuthorsModel, BooksModel.book_id == AuthorsModel.book_id)\
+        .join(LocationModel, BooksModel.book_id == LocationModel.book_id).filter_by(book_id=id).first()
     if request.method == "POST" :
         if book :
-            db.session.delete(book)
+            book2 = LocationModel.query.filter_by(book_id=id).first()
+            db.session.delete(book2)
             db.session.commit()
+            book1 = AuthorsModel.query.filter_by(book_id=id).first()
+            db.session.delete(book1)
+            db.session.commit()
+            book0 = BooksModel.query.filter_by(book_id=id).first()
+            db.session.delete(book0)
+            db.session.commit()            
             return redirect(f'/books')
         return f"Book with id = {id} doesn't exist"
     return redirect(f'/books/{id}')
