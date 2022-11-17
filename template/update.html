@@ -1,9 +1,15 @@
 <html>
     <body>
         <h1>Updated book</h1>
-        <form action="/" method="POST">
+        <form action="./updated" method="POST">
             <label for="Book_Name">Book Name : </label>
-            <input id= "Book_Name" type="text" name="Book_Name" value="{{book.book_name}}" required>
+            <input id= "Book_Name" type="text" name="book_name" value="{{book[0].book_name}}" required>
+            <p></p>
+            <label for="Author_Name">Author Name : </label>
+            <input id= "Author_Name" type="text" name="author_name" value="{{book[1].author_name}}" required>
+            <p></p>
+            <label for="Location_Name">Location Name : </label>
+            <input id= "Location_Name" type="text" name="location_name" value="{{book[2].location_name}}" required>
             <p></p>
             <input type="Submit" name="" value="Submit">
         </form>
