@@ -13,6 +13,12 @@
       <label for="Book_Name">Book Name : </label>
       <input id= "Book_Name" type="text" name="book_name" value="" required>
       <p></p>
+      <label for="Author_Name">Author : </label>
+      <input id= "Author_Name" type="text" name="author_name" value="" required>
+      <p></p>
+      <label for="Location_Name">Location : </label>
+      <input id= "Location_Name" type="text" name="location_name" value="" required>
+      <p></p>
       <input type="Submit" name="" value="Submit">
     </form>
     <h1>Books</h1>
@@ -20,11 +26,15 @@
       <tr>
         <th>Book ID</th>
         <th>Book Name</th>
+        <th>Author</th>
+        <th>Location</th>
       </tr>
-      {% for book in books %}
+      {% for da in data %}
         <tr>
-          <td><a href="books/{{book.book_id}}">{{book.book_id}}</a></td>
-          <td><a href="books/{{book.book_id}}">{{book.book_name}}</a></td>
+          <td><a href="data/{{da.book_id}}">{{da[0].book_id}}</a></td>
+          <td><a href="data/{{da.book_id}}">{{da[0].book_name}}</a></td>
+          <td><a href="data/{{da.book_id}}">{{da[1].author_name}}</a></td>
+          <td><a href="data/{{da.book_id}}">{{da[2].location_name}}</a></td>
         </tr>
     {% endfor %}
   </table>
