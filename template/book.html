@@ -1,15 +1,19 @@
 <html>
     <body>
         <h3>Book Id : </h3>
-        <p>{{book.book_id}}</p>
+        <p>{{book[0].book_id}}</p>
         <h3>Book Name : </h3>
-        <p>{{book.book_name}}</p>
+        <p>{{book[0].book_name}}</p>
+        <h3>Author : </h3>
+        <p>{{book[1].author_name}}</p>
+        <h3>Book Name : </h3>
+        <p>{{book[2].location_name}}</p>
         <h1>Update</h1>
-        <form action="{{book.book_id}}/update" method="POST">
+        <form action="{{book[0].book_id}}/update" method="POST">
           <input type="Submit" name="" value="Update">
         </form>
         <h1>Delete</h1>
-        <form action="{{book.book_id}}/delete"  method="POST">
+        <form action="{{book[0].book_id}}/delete"  method="POST">
           <input type="Submit" name="" value="Delete">
         </form>
     </body>
