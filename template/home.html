@@ -5,7 +5,7 @@
     <title>Book List</title>
   </head>
   <body>
-    <h1>Add book</h1>
+    <h1><FONT COLOR="red">Add book</FONT></h1>
     <form action="/" method="POST">
       <label for="Book_ID">Book ID : </label>
       <input id = "Book_ID" type="text" name="book_id" value="" required>
@@ -21,8 +21,16 @@
       <p></p>
       <input type="Submit" name="" value="Submit">
     </form>
-    <h1>Books</h1>
-    <table>
+    <h1><FONT COLOR="red">Books</FONT></h1>
+    <head>
+    <style>
+      table, th, td {
+         border: 1px solid black;
+      }
+    </style>
+    </head>
+    <table style="background-color:#ecbdc7">
+  
       <tr>
         <th>Book ID</th>
         <th>Book Name</th>
