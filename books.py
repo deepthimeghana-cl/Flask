@@ -1,10 +1,11 @@
 from flask import Flask
 from flask import render_template, redirect
 from flask import request
-from models import db, app, BooksModel
+from models import db, app, BooksModel, AuthorsModel, LocationModel
 from flask_migrate import Migrate
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 @app.before_first_request
 def create_table():
@@ -14,18 +15,27 @@ def create_table():
 def home() :
     if request.form :
         book = BooksModel(book_name=request.form.get("book_name"), book_id=request.form.get("book_id"))
+        author = AuthorsModel(author_name=request.form.get("author_name"), book_id=request.form.get("book_id"))
+        location = LocationModel(location_name=request.form.get("location_name"), book_id=request.form.get("book_id"))
         print(request.form)
         db.session.add(book)
+        db.session.commit()
+        db.session.add(author)
+        db.session.commit()
+        db.session.add(location)
         db.session.commit()
     return redirect("/books")
 
 @app.route("/books")
 def home_read() :
-    books = BooksModel.query.all()
+    books = db.session.query(BooksModel, AuthorsModel, LocationModel).join(AuthorsModel, BooksModel.book_id == AuthorsModel.book_id)\
+        .join(LocationModel, BooksModel.book_id == LocationModel.book_id).all()
     for book in books:
-        print(book.book_id)
-        print(book.book_name)
-    return render_template("home.html", books=books)
+        print(book[0].book_id)
+        print(book[0].book_name)
+        print(book[1].author_name)
+        print(book[2].location_name)
+    return render_template("home.html", data=books)
 
 @app.route("/books/<int:id>")
 def SingleBook(id) :
