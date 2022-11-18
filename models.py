@@ -23,6 +23,7 @@ class BooksModel(db.Model) :
     book_name = db.Column(db.String(80), nullable=False)
     author = relationship("AuthorsModel", backref="BooksModel")
     location = relationship("LocationModel", backref=backref("BooksModel", uselist=False))
+    readers = relationship("ReaderModel", secondary="ReaderBook")
 
     def __init__(self, book_id, book_name) :
         self.book_id = book_id
@@ -56,3 +57,31 @@ class LocationModel(db.Model) :
 
     def __repr__(self) :
         return f"{self.location_name}:{self.book_id}"
+
+class ReaderModel(db.Model) :
+    __tablename__ = "Readers"
+    reader_id = db.Column(db.Integer(), primary_key=True)
+    reader_name = db.Column(db.String(80), nullable=False)
+    book = relationship("BooksModel", secondary="ReaderBook")
+
+    def __init__(self, reader_id, reader_name) :
+        self.reader_id = reader_id
+        self.reader_name = reader_name
+
+    def __repr__(self) :
+        return f"{self.reader_name}:{self.reader_id}"
+
+class ReaderBookModel(db.Model) :
+    __tablename__ = "ReaderBook"
+    id = db.Column(db.Integer, primary_key=True)
+    reader_id = db.Column(db.Integer(), ForeignKey("Readers.reader_id"))
+    book_id = db.Column(db.Integer(), ForeignKey("Books.book_id"))
+    reader = relationship(ReaderModel, backref=backref("ReaderModel", cascade="all, delete-orphan"))
+    book = relationship(BooksModel, backref=backref("BooksModel", cascade="all, delete-orphan"))
+
+    #def __init__(self, reader_id, book_id) :
+    #    self.reader_id = reader_id
+    #    self.book_id = book_id
+
+    def __repr__(self) :
+        return f"{self.reader_id}:{self.book_id}"
